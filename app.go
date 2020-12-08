@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/apoloval/karen/gfx"
+	"github.com/apoloval/karen/gui"
 	"github.com/apoloval/karen/sdl"
 )
 
@@ -14,6 +15,7 @@ var ErrUnknownEngine = errors.New("unknown GFX engine")
 type App struct {
 	config   *Config
 	graphics gfx.Engine
+	scene    *gui.Scene
 }
 
 // NewApp instantiates a new application
@@ -36,12 +38,15 @@ func NewApp(opts ...Option) (*App, error) {
 }
 
 // NewScene instantiates a new UI scene
-func (a *App) NewScene() *Scene {
-	return &Scene{}
+func (a *App) NewScene() *gui.Scene {
+	s := gui.NewScene()
+	a.scene = s
+	return s
 }
 
 // Run this application until closed or fails
 func (a *App) Run() error {
+	a.scene.Draw(a.graphics.Canvas())
 	for {
 		ev, err := a.graphics.WaitEvent()
 		if err != nil {
