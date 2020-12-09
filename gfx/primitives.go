@@ -58,3 +58,6 @@ func (r Rect) BottomLeft() Pos {
 func (r Rect) BottomRight() Pos {
 	return Pos{X: r.Pos.X + r.Size.W, Y: r.Pos.Y + r.Size.H}
 }
+
+// Padding is the padding of objects in the screen measured in pixels
+type Padding int

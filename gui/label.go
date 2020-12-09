@@ -14,6 +14,7 @@ type Label struct {
 	Text       string
 	TextParams gfx.RenderTextParams
 	Align      gfx.Align
+	Padding    gfx.Padding
 
 	rendered gfx.RenderedText
 }
@@ -36,6 +37,7 @@ func (l *Label) Draw(canvas gfx.Canvas) {
 		}
 		l.rendered = rt
 	}
+	canvas = gfx.WithPadding(canvas, l.Padding)
 	dst := l.Align(l.rendered.Size().ToRect(), canvas.Size().ToRect())
 	canvas.DrawText(dst, l.rendered)
 }

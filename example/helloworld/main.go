@@ -14,7 +14,8 @@ func main() {
 
 	label := gui.NewLabel("Hello World!")
 	label.TextParams.Size = 48
-	label.Align = gfx.AlignCenter
+	label.Align = gfx.AlignTop
+	label.Padding = 50
 
 	app.NewScene().Add(label)
 
