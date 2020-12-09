@@ -1,78 +1,103 @@
 package gfx
 
-// AlignH is an horizontal alignment policy
-type AlignH interface {
-	CalculateX(src, dst int) int
+// Align is an object position alignment policy
+type Align func(src Rect, dst Rect) Rect
+
+// AlignLeft is an alignment policy to place the source at the left-middle of the destination
+func AlignLeft(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X,
+			Y: dst.Pos.Y + (dst.Size.H-src.Size.H)/2,
+		},
+		Size: src.Size,
+	}
 }
 
-// AlignV is a vertical alignment policy
-type AlignV interface {
-	CalculateY(src, dst int) int
+// AlignRight is an alignment policy to place the source at the right-middle of the destination
+func AlignRight(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X + dst.Size.W - src.Size.W,
+			Y: dst.Pos.Y + (dst.Size.H-src.Size.H)/2,
+		},
+		Size: src.Size,
+	}
 }
 
-// Align is a horizontal and vertical alignment policy
-type Align interface {
-	AlignH
-	AlignV
+// AlignTop is an alignment policy to place the source at the top-center of the destination
+func AlignTop(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X + (dst.Size.W-src.Size.W)/2,
+			Y: dst.Pos.Y,
+		},
+		Size: src.Size,
+	}
 }
 
-// Alignment definitions
-var (
-	AlignLeft   AlignH = alignLeft{}
-	AlignRight  AlignH = alignRight{}
-	AlignTop    AlignV = alignTop{}
-	AlignBottom AlignV = alignBottom{}
-	AlignCenter Align  = alignCenter{}
-)
-
-type alignLeft struct{}
-
-func (alignLeft) CalculateX(src, dst int) int {
-	return 0
+// AlignBottom is an alignment policy to place the source at the bottom-center of the destination
+func AlignBottom(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X + (dst.Size.W-src.Size.W)/2,
+			Y: dst.Pos.Y + dst.Size.H - src.Size.H,
+		},
+		Size: src.Size,
+	}
 }
 
-type alignRight struct{}
-
-func (alignRight) CalculateX(src, dst int) int {
-	return dst - src
+// AlignTopLeft is an alignment policy to place the source at the top-left of the destination
+func AlignTopLeft(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X,
+			Y: dst.Pos.Y,
+		},
+		Size: src.Size,
+	}
 }
 
-type alignTop struct{}
-
-func (alignTop) CalculateY(src, dst int) int {
-	return 0
+// AlignTopRight is an alignment policy to place the source at the top-right of the destination
+func AlignTopRight(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X + dst.Size.W - src.Size.W,
+			Y: dst.Pos.Y,
+		},
+		Size: src.Size,
+	}
 }
 
-type alignBottom struct{}
-
-func (alignBottom) CalculateY(src, dst int) int {
-	return dst - src
+// AlignBottomLeft is an alignment policy to place the source at the bottom-left of the destination
+func AlignBottomLeft(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X,
+			Y: dst.Pos.Y + dst.Size.H - src.Size.H,
+		},
+		Size: src.Size,
+	}
 }
 
-type alignCenter struct{}
-
-func (alignCenter) CalculateX(src, dst int) int {
-	return (dst - src) / 2
+// AlignBottomRight is an alignment policy to place the source at the bottom-right of the destination
+func AlignBottomRight(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X + dst.Size.W - src.Size.W,
+			Y: dst.Pos.Y + dst.Size.H - src.Size.H,
+		},
+		Size: src.Size,
+	}
 }
 
-func (alignCenter) CalculateY(src, dst int) int {
-	return (dst - src) / 2
-}
-
-// AlignTo combines the given horizontal and vertical alignments
-func AlignTo(h AlignH, v AlignV) Align {
-	return alignPair{h: h, v: v}
-}
-
-type alignPair struct {
-	h AlignH
-	v AlignV
-}
-
-func (p alignPair) CalculateX(src, dst int) int {
-	return p.h.CalculateX(src, dst)
-}
-
-func (p alignPair) CalculateY(src, dst int) int {
-	return p.v.CalculateY(src, dst)
+// AlignCenter is an alignment policy to place the source at the center of the destination
+func AlignCenter(src Rect, dst Rect) Rect {
+	return Rect{
+		Pos: Pos{
+			X: dst.Pos.X + (dst.Size.W-src.Size.W)/2,
+			Y: dst.Pos.Y + (dst.Size.H-src.Size.H)/2,
+		},
+		Size: src.Size,
+	}
 }

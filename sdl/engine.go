@@ -116,3 +116,10 @@ func (e *Engine) fontPath(fontType gfx.TextFontType) string {
 type renderedText struct {
 	surface *sdl.Surface
 }
+
+func (t *renderedText) Size() gfx.Size {
+	return gfx.Size{
+		W: int(t.surface.W),
+		H: int(t.surface.H),
+	}
+}

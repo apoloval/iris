@@ -11,10 +11,10 @@ type Canvas struct {
 }
 
 // DrawText draws the given text into this canvas
-func (c *Canvas) DrawText(text gfx.RenderedText, align gfx.Align) {
+func (c *Canvas) DrawText(dest gfx.Rect, text gfx.RenderedText) {
 	switch t := text.(type) {
 	case *renderedText:
-		c.drawText(t, align)
+		c.drawText(dest, t)
 	}
 }
 
@@ -30,17 +30,17 @@ func (c *Canvas) Flush() {
 	}
 }
 
-func (c *Canvas) drawText(text *renderedText, align gfx.Align) {
+// Size is the size of this canvas
+func (c *Canvas) Size() gfx.Size {
+	return gfx.Size{W: int(c.engine.screen.W), H: int(c.engine.screen.H)}
+}
+
+func (c *Canvas) drawText(dest gfx.Rect, text *renderedText) {
 	srcRect := sdl.Rect{
 		W: text.surface.W,
 		H: text.surface.H,
 	}
-	dstRect := sdl.Rect{
-		X: int32(align.CalculateX(int(srcRect.W), int(c.engine.screen.W))),
-		Y: int32(align.CalculateY(int(srcRect.H), int(c.engine.screen.H))),
-		W: srcRect.W,
-		H: srcRect.H,
-	}
+	dstRect := ToSDLRect(dest)
 	if err := text.surface.Blit(&srcRect, c.engine.screen, &dstRect); err != nil {
 		panic(err)
 	}

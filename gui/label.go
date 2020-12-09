@@ -23,7 +23,7 @@ func NewLabel(text string) *Label {
 	return &Label{
 		Text:       text,
 		TextParams: LabelDefaultTextParams,
-		Align:      gfx.AlignTo(gfx.AlignLeft, gfx.AlignTop),
+		Align:      gfx.AlignTopLeft,
 	}
 }
 
@@ -36,5 +36,6 @@ func (l *Label) Draw(canvas gfx.Canvas) {
 		}
 		l.rendered = rt
 	}
-	canvas.DrawText(l.rendered, l.Align)
+	dst := l.Align(l.rendered.Size().ToRect(), canvas.Size().ToRect())
+	canvas.DrawText(dst, l.rendered)
 }
