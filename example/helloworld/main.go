@@ -12,10 +12,14 @@ func main() {
 		panic(err)
 	}
 
-	label := gui.NewLabel("Hello World!")
-	label.TextParams.Size = 48
-	label.Align = gfx.AlignTop
-	label.Padding = 50
+	label := gui.NewLabel("Hello World!").
+		WithWidgetProps(
+			gui.WithAlign(gfx.AlignTop),
+			gui.WithPadding(50),
+		).
+		WithTextProps(
+			gui.WithFontSize(48),
+		)
 
 	app.NewScene().Add(label)
 
