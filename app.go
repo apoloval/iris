@@ -2,10 +2,12 @@ package karen
 
 import (
 	"errors"
+	"time"
 
 	"github.com/apoloval/karen/gfx"
-	"github.com/apoloval/karen/gui"
-	"github.com/apoloval/karen/sdl"
+	"github.com/apoloval/karen/internal/app"
+	"github.com/apoloval/karen/internal/sdl"
+	"github.com/apoloval/karen/internal/widget"
 )
 
 // ErrUnknownEngine is an error returned when an unknown engine is specified
@@ -13,9 +15,8 @@ var ErrUnknownEngine = errors.New("unknown GFX engine")
 
 // App is the Karen application object.
 type App struct {
-	config   *Config
-	graphics gfx.Engine
-	scene    *gui.Scene
+	config *Config
+	state  *app.State
 }
 
 // NewApp instantiates a new application
@@ -25,46 +26,66 @@ func NewApp(opts ...Option) (*App, error) {
 		return nil, err
 	}
 
-	graphics, err := newGraphics(cfg)
+	engine, err := newEngine(cfg)
 	if err != nil {
 		return nil, err
 	}
 
+	state := app.NewState(engine)
+
 	app := &App{
-		config:   cfg,
-		graphics: graphics,
+		config: cfg,
+		state:  state,
 	}
 	return app, nil
 }
 
-// NewScene instantiates a new UI scene
-func (a *App) NewScene() *gui.Scene {
-	s := gui.NewScene()
-	a.scene = s
-	return s
+// BeginFrame indicates to the app the beginning of a new frame
+func (a *App) BeginFrame() {
+	a.state.BeginFrame()
 }
 
-// Run this application until closed or fails
-func (a *App) Run() error {
-	a.scene.Draw(a.graphics.Canvas())
-	for {
-		ev, err := a.graphics.WaitEvent()
-		if err != nil {
-			return err
-		}
+// EndFrame indicates to the app the end of the current frame
+// It returns true if the application was requested to quit
+func (a *App) EndFrame() bool {
+	a.state.EndFrame()
+	return a.state.IO.Quit
+}
 
-		switch ev.(type) {
-		case gfx.EventQuit:
-			return nil
-		}
+// Stats returns the application performance statistics
+func (a *App) Stats() Stats {
+	frt := a.state.LastFrameDuration
+	fps := 1.0 / frt.Seconds()
+	return Stats{
+		FramesPerSecond: fps,
+		FrameRenderTime: frt,
 	}
 }
 
-func newGraphics(cfg *Config) (gfx.Engine, error) {
+// Label places a new label widget.
+// Returns true if the label is mouse focused.
+func (a *App) Label(wid uint, text string, opts ...WidgetOpt) bool {
+	a.applyOpts(opts)
+	return widget.Label(a.state, wid, text)
+}
+
+func (a *App) applyOpts(opts []WidgetOpt) {
+	for _, opt := range opts {
+		opt(&a.state.DrawProps)
+	}
+}
+
+func newEngine(cfg *Config) (gfx.Engine, error) {
 	switch cfg.Engine {
 	case EngineSDL:
 		return sdl.NewEngine(&cfg.Graphics)
 	default:
 		return nil, ErrUnknownEngine
 	}
+}
+
+// Stats are application performance statistics
+type Stats struct {
+	FramesPerSecond float64
+	FrameRenderTime time.Duration
 }

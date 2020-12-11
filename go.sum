@@ -1,3 +1,7 @@
+github.com/JamesHovious/w32 v1.1.0 h1:Cghhl7dY4oawL2BvmsuxEb5cPwUw1ctPAq85VIt5qtQ=
+github.com/JamesHovious/w32 v1.1.0/go.mod h1:/Y2i/iSYfWJypxp4NnirO9/V19yV2dJvNFCdU0hyW68=
+github.com/JamesHovious/w32 v1.1.1-0.20200903123904-f66b658cb169 h1:iLIqqIzL9wFKaFgOKC/lB+Ab1YKt4vkgrStOAbFEFzE=
+github.com/JamesHovious/w32 v1.1.1-0.20200903123904-f66b658cb169/go.mod h1:L6LTHMKvhtpGUkIYGTo4U9PKancYKpGS/+naYtTs8Ys=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

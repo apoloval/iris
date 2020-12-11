@@ -30,9 +30,3 @@ func (p RenderTextParams) Validate() error {
 	}
 	return nil
 }
-
-// RenderedText is a fragment ot text rendered by the canvas
-type RenderedText interface {
-	// Size is the size of the rendered text
-	Size() Size
-}
