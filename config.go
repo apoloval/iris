@@ -10,15 +10,26 @@ const (
 	EngineSDL EngineType = "sdl"
 )
 
-// Config is the application config
-type Config struct {
+// AppConfig is the application config
+type AppConfig struct {
 	Engine   EngineType
 	Graphics gfx.Config
 }
 
-func defaultConfig() *Config {
-	return &Config{
+// DefaultConfig returns the default app config
+func DefaultConfig() *AppConfig {
+	return &AppConfig{
 		Engine:   EngineSDL,
 		Graphics: gfx.DefaultConfig(),
 	}
+}
+
+// Apply the given app options to this config
+func (c *AppConfig) Apply(opts []AppOption) error {
+	for _, o := range opts {
+		if err := o(c); err != nil {
+			return err
+		}
+	}
+	return nil
 }

@@ -15,14 +15,14 @@ var ErrUnknownEngine = errors.New("unknown GFX engine")
 
 // App is the Karen application object.
 type App struct {
-	config *Config
+	config *AppConfig
 	state  *app.State
 }
 
 // NewApp instantiates a new application
-func NewApp(opts ...Option) (*App, error) {
-	cfg := defaultConfig()
-	if err := applyOptions(cfg, opts); err != nil {
+func NewApp(opts ...AppOption) (*App, error) {
+	cfg := DefaultConfig()
+	if err := cfg.Apply(opts); err != nil {
 		return nil, err
 	}
 
@@ -64,18 +64,18 @@ func (a *App) Stats() Stats {
 
 // Label places a new label widget.
 // Returns true if the label is mouse focused.
-func (a *App) Label(wid uint, text string, opts ...WidgetOpt) bool {
+func (a *App) Label(wid uint, text string, opts ...WidgetOption) bool {
 	a.applyOpts(opts)
 	return widget.Label(a.state, wid, text)
 }
 
-func (a *App) applyOpts(opts []WidgetOpt) {
+func (a *App) applyOpts(opts []WidgetOption) {
 	for _, opt := range opts {
 		opt(&a.state.DrawProps)
 	}
 }
 
-func newEngine(cfg *Config) (gfx.Engine, error) {
+func newEngine(cfg *AppConfig) (gfx.Engine, error) {
 	switch cfg.Engine {
 	case EngineSDL:
 		return sdl.NewEngine(&cfg.Graphics)

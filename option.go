@@ -1,13 +1,26 @@
 package karen
 
-// Option is an application option
-type Option func(*Config) error
+import (
+	"github.com/apoloval/karen/gfx"
+	"github.com/apoloval/karen/internal/app"
+)
 
-func applyOptions(cfg *Config, opts []Option) error {
-	for _, o := range opts {
-		if err := o(cfg); err != nil {
-			return err
-		}
+// AppOption is an application option
+type AppOption func(*AppConfig) error
+
+// WidgetOption is a widget option
+type WidgetOption func(*app.DrawProps)
+
+//FontSize is a widget option to set the size of the text font
+func FontSize(size gfx.TextFontSize) WidgetOption {
+	return func(p *app.DrawProps) {
+		p.DefineFontSize(size)
 	}
-	return nil
+}
+
+// FontColor is a widget option to set the color of the text font
+func FontColor(col gfx.Color) WidgetOption {
+	return func(p *app.DrawProps) {
+		p.DefineFontColor(col)
+	}
 }
