@@ -1,6 +1,8 @@
 package karen
 
 import (
+	"image"
+
 	"github.com/apoloval/karen/gfx"
 	"github.com/apoloval/karen/internal/app"
 )
@@ -22,5 +24,19 @@ func FontSize(size gfx.TextFontSize) WidgetOption {
 func FontColor(col gfx.Color) WidgetOption {
 	return func(p *app.DrawProps) {
 		p.DefineFontColor(col)
+	}
+}
+
+// Expand is a widget option to expand the widget size
+func Expand(size image.Point) WidgetOption {
+	return func(p *app.DrawProps) {
+		p.DefineExpand(size)
+	}
+}
+
+// Align is a widget option to set the alignment
+func Align(a gfx.Align) WidgetOption {
+	return func(p *app.DrawProps) {
+		p.DefineAlign(a)
 	}
 }

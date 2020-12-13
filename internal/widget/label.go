@@ -1,14 +1,15 @@
 package widget
 
 import (
-	"image"
-
 	"github.com/apoloval/karen/gfx"
 	"github.com/apoloval/karen/internal/app"
 )
 
-// DefaultLabelFontSize is the default font size for label widgets
-const DefaultLabelFontSize gfx.TextFontSize = 14
+// Default label constants
+const (
+	DefaultLabelFontSize gfx.TextFontSize = 14
+	DefaultLabelAlign    gfx.Align        = gfx.AlignTopLeft
+)
 
 // DefaultLabelFontColor is the default font color for label widgets
 var DefaultLabelFontColor gfx.Color = gfx.ColorWhite
@@ -20,6 +21,7 @@ func Label(s *app.State, wid uint, text string) bool {
 		Font:  gfx.TextFontTypeArial,
 		Size:  s.DrawProps.FontSize(DefaultLabelFontSize),
 		Color: s.DrawProps.FontColor(DefaultLabelFontColor),
+		Align: s.DrawProps.Align(DefaultLabelAlign),
 	}
 
 	size, err := s.Engine.TextDims(text, textParams)
@@ -27,12 +29,15 @@ func Label(s *app.State, wid uint, text string) bool {
 		panic(err)
 	}
 
-	dest := image.Rect(
-		s.Cursor.X,
-		s.Cursor.Y,
-		s.Cursor.X+size.X,
-		s.Cursor.Y+size.Y,
-	)
+	exp := s.DrawProps.Expand(size)
+	if exp.X > size.X {
+		size.X = exp.X
+	}
+	if exp.Y > size.Y {
+		size.Y = exp.Y
+	}
+
+	dest := s.Available(size)
 	mouseFocused := s.IO.MouseIn(dest)
 
 	s.DrawList.Append(gfx.DrawText{
@@ -41,8 +46,6 @@ func Label(s *app.State, wid uint, text string) bool {
 		Params: textParams,
 	})
 
-	s.Cursor.Y += size.Y
-	s.DrawProps.Reset()
-
+	s.Next(dest.Size())
 	return mouseFocused
 }

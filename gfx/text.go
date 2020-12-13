@@ -18,6 +18,7 @@ type RenderTextParams struct {
 	Font  TextFontType
 	Size  TextFontSize
 	Color Color
+	Align Align
 }
 
 // Validate the render text parameters

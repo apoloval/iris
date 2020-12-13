@@ -14,6 +14,9 @@ type Engine interface {
 	// EndFrame ends the current screen frame
 	EndFrame()
 
+	// ScreenDims returns the dimensions of the screen
+	ScreenDims() image.Point
+
 	// PollEvents polls IO events from this engine and updates the corresponding IO state with them
 	PollEvents(s *io.State) error
 

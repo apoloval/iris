@@ -9,7 +9,9 @@ type DrawAction interface {
 
 // DrawTexture is an action to draw a image texture on the screen
 type DrawTexture struct {
+	Src     image.Rectangle
 	Dest    image.Rectangle
+	Align   Align
 	Texture Texture
 }
 

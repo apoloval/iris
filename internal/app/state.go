@@ -15,7 +15,7 @@ type State struct {
 	DrawList  gfx.DrawList
 	DrawProps DrawProps
 
-	Cursor image.Point
+	Layout LayoutStack
 
 	FrameStart        time.Time
 	FrameEnd          time.Time
@@ -26,6 +26,8 @@ type State struct {
 func NewState(e gfx.Engine) *State {
 	return &State{
 		Engine: e,
+		IO:     io.NewState(),
+		Layout: NewLayoutStack(),
 	}
 }
 
@@ -37,7 +39,13 @@ func (s *State) BeginFrame() {
 	}
 	s.Engine.BeginFrame()
 	s.DrawList.Clean()
-	s.Cursor = image.Pt(0, 0)
+
+	screenRect := image.Rectangle{
+		Min: image.Pt(0, 0),
+		Max: s.Engine.ScreenDims(),
+	}
+	layout := VerticalLayout(screenRect)
+	s.Layout.Push(layout)
 }
 
 // EndFrame indicates to the app the end of the current frame
@@ -46,4 +54,28 @@ func (s *State) EndFrame() {
 	s.Engine.EndFrame()
 	s.FrameEnd = time.Now()
 	s.LastFrameDuration = s.FrameEnd.Sub(s.FrameStart)
+}
+
+// BeginLayoutH begins a horizontal layout
+func (s *State) BeginLayoutH() {
+	l := HorizontalLayout(s.Layout.Top().Available(image.ZP))
+	s.Layout.Push(l)
+}
+
+// EndLayout ends the current layout
+func (s *State) EndLayout() {
+	used := s.Layout.Top().Used()
+	s.Layout.Pop()
+	s.Layout.Top().Next(used.Size())
+}
+
+// Available returns the available space for the current widget
+func (s *State) Available(req image.Point) image.Rectangle {
+	return s.Layout.Top().Available(req)
+}
+
+// Next signals the state must be prepared for the next widget in the layout
+func (s *State) Next(size image.Point) {
+	s.Layout.Top().Next(size)
+	s.DrawProps.Reset()
 }

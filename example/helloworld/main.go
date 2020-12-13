@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"runtime"
 
 	"github.com/apoloval/karen"
@@ -26,10 +27,23 @@ func main() {
 		stats := app.Stats()
 		var mem runtime.MemStats
 		runtime.ReadMemStats(&mem)
+
 		app.Label(2, "Performance statistics:")
-		app.Label(3, fmt.Sprintf("   Frames per second : %.2f", stats.FramesPerSecond))
-		app.Label(4, fmt.Sprintf("   Frame render time : %v", stats.FrameRenderTime))
-		app.Label(5, fmt.Sprintf("   Allocated memory  : %s", bytesForHuman(mem.Alloc)))
+
+		app.BeginLayoutH()
+		app.Label(3, "Frames per second :", karen.Expand(image.Pt(300, 0)), karen.Align(gfx.AlignRight))
+		app.Label(4, fmt.Sprintf("%.2f", stats.FramesPerSecond))
+		app.EndLayout()
+
+		app.BeginLayoutH()
+		app.Label(5, "Frame render time :", karen.Expand(image.Pt(300, 0)), karen.Align(gfx.AlignRight))
+		app.Label(6, fmt.Sprintf("%v", stats.FrameRenderTime))
+		app.EndLayout()
+
+		app.BeginLayoutH()
+		app.Label(7, "Allocated memory :", karen.Expand(image.Pt(300, 0)), karen.Align(gfx.AlignRight))
+		app.Label(8, bytesForHuman(mem.Alloc))
+		app.EndLayout()
 
 		if app.EndFrame() {
 			break

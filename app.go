@@ -52,6 +52,16 @@ func (a *App) EndFrame() bool {
 	return a.state.IO.Quit
 }
 
+// BeginLayoutH begins a new horizontal layout
+func (a *App) BeginLayoutH() {
+	a.state.BeginLayoutH()
+}
+
+// EndLayout ends the current layout
+func (a *App) EndLayout() {
+	a.state.EndLayout()
+}
+
 // Stats returns the application performance statistics
 func (a *App) Stats() Stats {
 	frt := a.state.LastFrameDuration
