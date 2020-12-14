@@ -1,8 +1,6 @@
 package karen
 
 import (
-	"image"
-
 	"github.com/apoloval/karen/gfx"
 	"github.com/apoloval/karen/internal/app"
 )
@@ -27,16 +25,26 @@ func FontColor(col gfx.Color) WidgetOption {
 	}
 }
 
-// Expand is a widget option to expand the widget size
-func Expand(size image.Point) WidgetOption {
-	return func(p *app.DrawProps) {
-		p.DefineExpand(size)
-	}
-}
-
 // Align is a widget option to set the alignment
 func Align(a gfx.Align) WidgetOption {
 	return func(p *app.DrawProps) {
 		p.DefineAlign(a)
+	}
+}
+
+// LayoutOption is a layout option
+type LayoutOption func(*app.LayoutProps)
+
+// Padding is a layout option to set the padding of the widgets
+func Padding(pixels int) LayoutOption {
+	return func(p *app.LayoutProps) {
+		p.Padding = pixels
+	}
+}
+
+// Expand is a layout option to expand the widgets to the maximum space
+func Expand(pixels int) LayoutOption {
+	return func(p *app.LayoutProps) {
+		p.Expand = pixels
 	}
 }

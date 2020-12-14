@@ -29,14 +29,6 @@ func Label(s *app.State, wid uint, text string) bool {
 		panic(err)
 	}
 
-	exp := s.DrawProps.Expand(size)
-	if exp.X > size.X {
-		size.X = exp.X
-	}
-	if exp.Y > size.Y {
-		size.Y = exp.Y
-	}
-
 	dest := s.Available(size)
 	mouseFocused := s.IO.MouseIn(dest)
 

@@ -1,8 +1,6 @@
 package app
 
 import (
-	"image"
-
 	"github.com/apoloval/karen/gfx"
 )
 
@@ -10,7 +8,6 @@ import (
 type DrawProps struct {
 	fontSize  Prop
 	fontColor Prop
-	expand    Prop
 	align     Prop
 }
 
@@ -18,7 +15,6 @@ type DrawProps struct {
 func (p *DrawProps) Reset() {
 	p.fontSize.Undefine()
 	p.fontColor.Undefine()
-	p.expand.Undefine()
 	p.align.Undefine()
 }
 
@@ -40,16 +36,6 @@ func (p *DrawProps) DefineFontColor(col gfx.Color) {
 // FontColor returns the text font color property, or the given fallback if undefined
 func (p *DrawProps) FontColor(fb gfx.Color) gfx.Color {
 	return p.fontColor.Get(fb).(gfx.Color)
-}
-
-// DefineExpand sets the expansion size of this widget in its layout
-func (p *DrawProps) DefineExpand(size image.Point) {
-	p.expand.Define(size)
-}
-
-// Expand returns the expansion size of this widget in its layout
-func (p *DrawProps) Expand(fb image.Point) image.Point {
-	return p.expand.Get(fb).(image.Point)
 }
 
 // DefineAlign sets the widget alignment

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"image"
 	"runtime"
 
 	"github.com/apoloval/karen"
@@ -19,9 +18,9 @@ func main() {
 	for {
 		app.BeginFrame()
 
-		app.BeginLayoutH(250)
-		app.BeginLayoutV(200)
-		app.BeginLayoutV(5)
+		app.BeginLayoutH(karen.Padding(10))
+		app.BeginLayoutV(karen.Padding(10))
+		app.BeginLayoutV(karen.Padding(5))
 
 		if app.Label(1, "Hello World!", karen.FontColor(col)) {
 			col = gfx.ColorRed
@@ -35,21 +34,20 @@ func main() {
 
 		app.Label(2, "Performance statistics:")
 
-		app.BeginLayoutV(5)
-		app.BeginLayoutH(5)
-		app.Label(3, "Frames per second :", karen.Expand(image.Pt(300, 0)), karen.Align(gfx.AlignRight))
-		app.Label(4, fmt.Sprintf("%.2f", stats.FramesPerSecond))
+		app.BeginLayoutH(karen.Padding(5))
+
+		app.BeginLayoutV(karen.Expand(300))
+		app.Label(3, "Frames per second :", karen.Align(gfx.AlignRight))
+		app.Label(4, "Frame render time :", karen.Align(gfx.AlignRight))
+		app.Label(5, "Allocated memory :", karen.Align(gfx.AlignRight))
 		app.EndLayout()
 
-		app.BeginLayoutH(5)
-		app.Label(5, "Frame render time :", karen.Expand(image.Pt(300, 0)), karen.Align(gfx.AlignRight))
-		app.Label(6, fmt.Sprintf("%v", stats.FrameRenderTime))
-		app.EndLayout()
-
-		app.BeginLayoutH(5)
-		app.Label(7, "Allocated memory :", karen.Expand(image.Pt(300, 0)), karen.Align(gfx.AlignRight))
+		app.BeginLayoutV()
+		app.Label(6, fmt.Sprintf("%.2f", stats.FramesPerSecond))
+		app.Label(7, fmt.Sprintf("%v", stats.FrameRenderTime))
 		app.Label(8, bytesForHuman(mem.Alloc))
 		app.EndLayout()
+
 		app.EndLayout()
 
 		app.EndLayout()

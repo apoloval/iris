@@ -53,13 +53,13 @@ func (a *App) EndFrame() bool {
 }
 
 // BeginLayoutH begins a new horizontal layout
-func (a *App) BeginLayoutH(padding int) {
-	a.state.BeginLayoutH(padding)
+func (a *App) BeginLayoutH(opts ...LayoutOption) {
+	a.state.BeginLayoutH(a.applyLayoutOpts(opts))
 }
 
 // BeginLayoutV begins a new vertical layout
-func (a *App) BeginLayoutV(padding int) {
-	a.state.BeginLayoutV(padding)
+func (a *App) BeginLayoutV(opts ...LayoutOption) {
+	a.state.BeginLayoutV(a.applyLayoutOpts(opts))
 }
 
 // EndLayout ends the current layout
@@ -80,14 +80,22 @@ func (a *App) Stats() Stats {
 // Label places a new label widget.
 // Returns true if the label is mouse focused.
 func (a *App) Label(wid uint, text string, opts ...WidgetOption) bool {
-	a.applyOpts(opts)
+	a.applyWidgetOpts(opts)
 	return widget.Label(a.state, wid, text)
 }
 
-func (a *App) applyOpts(opts []WidgetOption) {
+func (a *App) applyWidgetOpts(opts []WidgetOption) {
 	for _, opt := range opts {
 		opt(&a.state.DrawProps)
 	}
+}
+
+func (a *App) applyLayoutOpts(opts []LayoutOption) app.LayoutProps {
+	var props app.LayoutProps
+	for _, opt := range opts {
+		opt(&props)
+	}
+	return props
 }
 
 func newEngine(cfg *AppConfig) (gfx.Engine, error) {
