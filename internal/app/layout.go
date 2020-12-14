@@ -19,20 +19,24 @@ type Layout interface {
 }
 
 // VerticalLayout is a layout policy that emplaces the widgets vertically
-func VerticalLayout(cursor image.Rectangle) Layout {
+func VerticalLayout(cursor image.Rectangle, padding int) Layout {
 	used := image.Rectangle{
 		Min: cursor.Min,
 		Max: cursor.Min,
 	}
+	cursor.Min = cursor.Min.Add(image.Pt(0, padding))
+	cursor.Max = cursor.Max.Sub(image.Pt(0, padding))
 	return &verticalLayout{
-		cursor: cursor,
-		used:   used,
+		cursor:  cursor,
+		used:    used,
+		padding: padding,
 	}
 }
 
 type verticalLayout struct {
-	cursor image.Rectangle
-	used   image.Rectangle
+	cursor  image.Rectangle
+	used    image.Rectangle
+	padding int
 }
 
 func (l *verticalLayout) Available(req image.Point) image.Rectangle {
@@ -50,25 +54,29 @@ func (l *verticalLayout) Next(size image.Point) {
 	if size.X > l.used.Dx() {
 		l.used.Max.X = l.used.Min.X + size.X
 	}
-	l.used.Max.Y += size.Y
-	l.cursor.Min.Y += size.Y
+	l.used.Max.Y += size.Y + 2*l.padding
+	l.cursor.Min.Y += size.Y + 2*l.padding
 }
 
 // HorizontalLayout is a layout policy that emplaces the widgets horizontally
-func HorizontalLayout(cursor image.Rectangle) Layout {
+func HorizontalLayout(cursor image.Rectangle, padding int) Layout {
 	used := image.Rectangle{
 		Min: cursor.Min,
 		Max: cursor.Min,
 	}
+	cursor.Min = cursor.Min.Add(image.Pt(padding, 0))
+	cursor.Max = cursor.Max.Sub(image.Pt(padding, 0))
 	return &horizontalLayout{
-		cursor: cursor,
-		used:   used,
+		cursor:  cursor,
+		used:    used,
+		padding: padding,
 	}
 }
 
 type horizontalLayout struct {
-	cursor image.Rectangle
-	used   image.Rectangle
+	cursor  image.Rectangle
+	used    image.Rectangle
+	padding int
 }
 
 func (l *horizontalLayout) Available(req image.Point) image.Rectangle {
@@ -86,8 +94,8 @@ func (l *horizontalLayout) Next(size image.Point) {
 	if size.Y > l.used.Dy() {
 		l.used.Max.Y = l.used.Min.Y + size.Y
 	}
-	l.used.Max.X += size.X
-	l.cursor.Min.X += size.X
+	l.used.Max.X += size.X + 2*l.padding
+	l.cursor.Min.X += size.X + 2*l.padding
 }
 
 // LayoutStack is a stack of layouts

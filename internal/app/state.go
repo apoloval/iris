@@ -44,7 +44,7 @@ func (s *State) BeginFrame() {
 		Min: image.Pt(0, 0),
 		Max: s.Engine.ScreenDims(),
 	}
-	layout := VerticalLayout(screenRect)
+	layout := VerticalLayout(screenRect, 0)
 	s.Layout.Push(layout)
 }
 
@@ -57,8 +57,14 @@ func (s *State) EndFrame() {
 }
 
 // BeginLayoutH begins a horizontal layout
-func (s *State) BeginLayoutH() {
-	l := HorizontalLayout(s.Layout.Top().Available(image.ZP))
+func (s *State) BeginLayoutH(padding int) {
+	l := HorizontalLayout(s.Layout.Top().Available(image.ZP), padding)
+	s.Layout.Push(l)
+}
+
+// BeginLayoutV begins a vertical layout
+func (s *State) BeginLayoutV(padding int) {
+	l := VerticalLayout(s.Layout.Top().Available(image.ZP), padding)
 	s.Layout.Push(l)
 }
 

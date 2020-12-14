@@ -53,8 +53,13 @@ func (a *App) EndFrame() bool {
 }
 
 // BeginLayoutH begins a new horizontal layout
-func (a *App) BeginLayoutH() {
-	a.state.BeginLayoutH()
+func (a *App) BeginLayoutH(padding int) {
+	a.state.BeginLayoutH(padding)
+}
+
+// BeginLayoutV begins a new vertical layout
+func (a *App) BeginLayoutV(padding int) {
+	a.state.BeginLayoutV(padding)
 }
 
 // EndLayout ends the current layout
