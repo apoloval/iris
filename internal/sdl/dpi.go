@@ -1,10 +1,6 @@
 package sdl
 
 import (
-	"fmt"
-	"runtime"
-
-	"github.com/JamesHovious/w32"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -26,13 +22,6 @@ func initDPI() (*dpi, error) {
 	}, nil
 }
 
-func prepareDPI() {
-	switch runtime.GOOS {
-	case "windows":
-		w32.SetProcessDPIAware()
-	}
-}
-
 func (d *dpi) scaleX(size int) int {
 	return d.scale(d.x, size)
 }
@@ -52,6 +41,6 @@ func (d *dpi) scale(dpi, size int) int {
 	case 192:
 		return size * 2
 	default:
-		panic(fmt.Errorf("unknown DPI factor: %v", dpi))
+		return size
 	}
 }

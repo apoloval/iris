@@ -1,0 +1,4 @@
+package sdl
+
+func prepareDPI() {
+}

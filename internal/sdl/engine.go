@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"image"
-	"runtime"
 
 	"github.com/apoloval/iris/gfx"
 	"github.com/apoloval/iris/internal/io"
@@ -176,22 +175,13 @@ func (e *Engine) font(fontType gfx.TextFontType, fontSize gfx.TextFontSize) (*tt
 		return f, nil
 	}
 
-	f, err := ttf.OpenFont(e.fontPath(fontType), e.dpi.scaleY(int(fontSize)))
+	f, err := ttf.OpenFont(fontPath(fontType), e.dpi.scaleY(int(fontSize)))
 	if err != nil {
 		return nil, err
 	}
 
 	e.fonts[key] = f
 	return f, nil
-}
-
-func (e *Engine) fontPath(fontType gfx.TextFontType) string {
-	switch runtime.GOOS {
-	case "windows":
-		return fmt.Sprintf("C:\\WINDOWS\\FONTS\\%s.TTF", fontType)
-	default:
-		panic(fmt.Errorf("unknown platform: %s", runtime.GOOS))
-	}
 }
 
 type texture struct {
