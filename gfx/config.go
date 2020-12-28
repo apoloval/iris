@@ -10,7 +10,7 @@ type Config struct {
 var defaultConfig = Config{
 	ScreenWidth:  800,
 	ScreenHeight: 600,
-	WindowTitle:  "Karen application",
+	WindowTitle:  "Iris application",
 }
 
 // DefaultConfig generates a config struct with default values

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/apoloval/karen"
-	"github.com/apoloval/karen/gfx"
+	"github.com/apoloval/iris"
+	"github.com/apoloval/iris/gfx"
 )
 
 func main() {
-	app, err := karen.NewApp()
+	app, err := iris.NewApp()
 	if err != nil {
 		panic(err)
 	}
@@ -18,11 +18,11 @@ func main() {
 	for {
 		app.BeginFrame()
 
-		app.BeginLayoutH(karen.Padding(10))
-		app.BeginLayoutV(karen.Padding(10))
-		app.BeginLayoutV(karen.Padding(5))
+		app.BeginLayoutH(iris.Padding(10))
+		app.BeginLayoutV(iris.Padding(10))
+		app.BeginLayoutV(iris.Padding(5))
 
-		if app.Label(1, "Hello World!", karen.FontColor(col)) {
+		if app.Label(1, "Hello World!", iris.FontColor(col)) {
 			col = gfx.ColorRed
 		} else {
 			col = gfx.ColorWhite
@@ -34,9 +34,9 @@ func main() {
 
 		app.Label(2, "Performance statistics:")
 
-		app.BeginLayoutH(karen.Padding(5))
+		app.BeginLayoutH(iris.Padding(5))
 
-		app.BeginLayoutV(karen.Expand(300), karen.Align(gfx.AlignRight))
+		app.BeginLayoutV(iris.Expand(300), iris.Align(gfx.AlignRight))
 		app.Label(3, "Frames per second :")
 		app.Label(4, "Frame render time :")
 		app.Label(5, "Allocated memory :")

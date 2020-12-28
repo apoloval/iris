@@ -6,8 +6,8 @@ import (
 	"image"
 	"runtime"
 
-	"github.com/apoloval/karen/gfx"
-	"github.com/apoloval/karen/internal/io"
+	"github.com/apoloval/iris/gfx"
+	"github.com/apoloval/iris/internal/io"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
 )

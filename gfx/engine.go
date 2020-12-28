@@ -3,7 +3,7 @@ package gfx
 import (
 	"image"
 
-	"github.com/apoloval/karen/internal/io"
+	"github.com/apoloval/iris/internal/io"
 )
 
 // Engine is a graphics engine

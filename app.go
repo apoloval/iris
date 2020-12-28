@@ -1,19 +1,19 @@
-package karen
+package iris
 
 import (
 	"errors"
 	"time"
 
-	"github.com/apoloval/karen/gfx"
-	"github.com/apoloval/karen/internal/app"
-	"github.com/apoloval/karen/internal/sdl"
-	"github.com/apoloval/karen/internal/widget"
+	"github.com/apoloval/iris/gfx"
+	"github.com/apoloval/iris/internal/app"
+	"github.com/apoloval/iris/internal/sdl"
+	"github.com/apoloval/iris/internal/widget"
 )
 
 // ErrUnknownEngine is an error returned when an unknown engine is specified
 var ErrUnknownEngine = errors.New("unknown GFX engine")
 
-// App is the Karen application object.
+// App is the Iris application object.
 type App struct {
 	config *AppConfig
 	state  *app.State

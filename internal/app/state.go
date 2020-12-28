@@ -4,8 +4,8 @@ import (
 	"image"
 	"time"
 
-	"github.com/apoloval/karen/gfx"
-	"github.com/apoloval/karen/internal/io"
+	"github.com/apoloval/iris/gfx"
+	"github.com/apoloval/iris/internal/io"
 )
 
 // State is the internal state of the application

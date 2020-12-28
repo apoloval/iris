@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/apoloval/karen/gfx"
+	"github.com/apoloval/iris/gfx"
 )
 
 // DrawProps are the drawing properties used by the app for the next widget

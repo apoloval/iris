@@ -1,8 +1,8 @@
-package karen
+package iris
 
 import (
-	"github.com/apoloval/karen/gfx"
-	"github.com/apoloval/karen/internal/app"
+	"github.com/apoloval/iris/gfx"
+	"github.com/apoloval/iris/internal/app"
 )
 
 // AppOption is an application option

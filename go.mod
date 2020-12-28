@@ -1,4 +1,4 @@
-module github.com/apoloval/karen
+module github.com/apoloval/iris
 
 go 1.14
 

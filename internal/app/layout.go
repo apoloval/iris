@@ -3,7 +3,7 @@ package app
 import (
 	"image"
 
-	"github.com/apoloval/karen/gfx"
+	"github.com/apoloval/iris/gfx"
 )
 
 // Layout is a policy that determines how widgets are emplaced in the screen

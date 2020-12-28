@@ -1,6 +1,6 @@
-package karen
+package iris
 
-import "github.com/apoloval/karen/gfx"
+import "github.com/apoloval/iris/gfx"
 
 // EngineType is a config setting that defines the graphics engine type
 type EngineType string
