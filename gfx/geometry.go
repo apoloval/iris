@@ -15,6 +15,15 @@ func RectReduce(r image.Rectangle, size image.Point) image.Rectangle {
 	return AsRectSize(size).Add(r.Min).Intersect(r)
 }
 
+// RectAddPadding adds the given padding to `r`
+func RectAddPadding(r image.Rectangle, padding int) image.Rectangle {
+	p := image.Pt(padding, padding)
+	return image.Rectangle{
+		Min: r.Min.Sub(p),
+		Max: r.Max.Add(p),
+	}
+}
+
 // Align describes the widget alignment
 type Align int
 
@@ -32,24 +41,26 @@ const (
 )
 
 // Apply this alignment to the given rectangles
-func (a Align) Apply(src, dest image.Rectangle) image.Rectangle {
-	sizeDiff := dest.Size().Sub(src.Size())
+func (a Align) Apply(src image.Point, dest image.Rectangle) image.Rectangle {
+	sizeDiff := dest.Size().Sub(src)
 	switch a {
+	case AlignTopLeft, AlignLeft, AlignBottomLeft:
+		dest.Max.X -= sizeDiff.X
 	case AlignTop, AlignCenter, AlignBottom:
 		dest.Min.X += sizeDiff.X / 2
-		dest.Max.X += sizeDiff.X / 2
+		dest.Max.X -= sizeDiff.X / 2
 	case AlignTopRight, AlignRight, AlignBottomRight:
 		dest.Min.X += sizeDiff.X
-		dest.Max.X += sizeDiff.X
 	}
 
 	switch a {
+	case AlignTopLeft, AlignTop, AlignTopRight:
+		dest.Max.Y -= sizeDiff.Y
 	case AlignLeft, AlignCenter, AlignRight:
 		dest.Min.Y += sizeDiff.Y / 2
-		dest.Max.Y += sizeDiff.Y / 2
+		dest.Max.Y -= sizeDiff.Y / 2
 	case AlignBottomLeft, AlignBottom, AlignBottomRight:
 		dest.Min.Y += sizeDiff.Y
-		dest.Max.Y += sizeDiff.Y
 	}
 
 	return dest

@@ -38,6 +38,6 @@ func Label(s *app.State, wid uint, text string) bool {
 		Params: textParams,
 	})
 
-	s.Next(dest.Size())
+	s.Next(dest)
 	return mouseFocused
 }

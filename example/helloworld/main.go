@@ -36,10 +36,10 @@ func main() {
 
 		app.BeginLayoutH(karen.Padding(5))
 
-		app.BeginLayoutV(karen.Expand(300))
-		app.Label(3, "Frames per second :", karen.Align(gfx.AlignRight))
-		app.Label(4, "Frame render time :", karen.Align(gfx.AlignRight))
-		app.Label(5, "Allocated memory :", karen.Align(gfx.AlignRight))
+		app.BeginLayoutV(karen.Expand(300), karen.Align(gfx.AlignRight))
+		app.Label(3, "Frames per second :")
+		app.Label(4, "Frame render time :")
+		app.Label(5, "Allocated memory :")
 		app.EndLayout()
 
 		app.BeginLayoutV()

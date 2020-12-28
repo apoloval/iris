@@ -127,13 +127,13 @@ func (e *Engine) applyDrawText(act gfx.DrawText) error {
 	}
 	defer surface.Free()
 
-	sizeRect := gfx.AsRectSize(image.Pt(int(surface.W), int(surface.H)))
-	srcRect := sizeRect.Intersect(gfx.AsRectSize(act.Dest.Size()))
+	srcSize := gfx.AsRectSize(image.Pt(int(surface.W), int(surface.H)))
+	destSize := gfx.AsRectSize(act.Dest.Size())
+	srcRect := srcSize.Intersect(destSize)
 
 	return e.drawSurface(
 		srcRect,
 		act.Dest,
-		act.Params.Align,
 		surface,
 	)
 }
@@ -141,14 +141,13 @@ func (e *Engine) applyDrawText(act gfx.DrawText) error {
 func (e *Engine) applyDrawTexture(act gfx.DrawTexture) error {
 	switch t := act.Texture.(type) {
 	case *texture:
-		return e.drawSurface(act.Src, act.Dest, act.Align, t.surface)
+		return e.drawSurface(act.Src, act.Dest, t.surface)
 	default:
 		return errors.New("invalid texture type received by the engine")
 	}
 }
 
-func (e *Engine) drawSurface(src, dest image.Rectangle, align gfx.Align, sur *sdl.Surface) error {
-	dest = align.Apply(src, dest)
+func (e *Engine) drawSurface(src, dest image.Rectangle, sur *sdl.Surface) error {
 	srcRect := ToSDLRect(src)
 	dstRect := ToSDLRect(dest)
 
