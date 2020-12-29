@@ -15,14 +15,13 @@ type Layout interface {
 	Used() image.Rectangle
 
 	// Next indicates the current widget was emplaced and how much space it required
-	Next(used image.Rectangle)
+	Next(size image.Point)
 }
 
 // LayoutProps are the properties of a layout
 type LayoutProps struct {
 	Padding int
 	Expand  int
-	Align   gfx.Align
 }
 
 // VerticalLayout is a layout policy that emplaces the widgets vertically
@@ -51,8 +50,7 @@ func (l *verticalLayout) Available(req image.Point) image.Rectangle {
 		return l.cursor
 	}
 	if l.props.Expand > req.X {
-		exp := image.Pt(l.props.Expand, req.Y)
-		return l.props.Align.Apply(req, gfx.RectReduce(l.cursor, exp))
+		req.X = l.props.Expand
 	}
 	return gfx.RectReduce(l.cursor, req)
 }
@@ -61,9 +59,12 @@ func (l *verticalLayout) Used() image.Rectangle {
 	return l.used
 }
 
-func (l *verticalLayout) Next(used image.Rectangle) {
-	l.used = l.used.Union(gfx.RectAddPadding(used, l.props.Padding))
-	l.cursor.Min.Y = used.Max.Y + 2*l.props.Padding
+func (l *verticalLayout) Next(size image.Point) {
+	if size.X > l.used.Dx() {
+		l.used.Max.X = l.used.Min.X + size.X
+	}
+	l.used.Max.Y += size.Y + 2*l.props.Padding
+	l.cursor.Min.Y += size.Y + 2*l.props.Padding
 }
 
 // HorizontalLayout is a layout policy that emplaces the widgets horizontally
@@ -92,8 +93,7 @@ func (l *horizontalLayout) Available(req image.Point) image.Rectangle {
 		return l.cursor
 	}
 	if l.props.Expand > req.Y {
-		exp := image.Pt(req.X, l.props.Expand)
-		return l.props.Align.Apply(req, gfx.RectReduce(l.cursor, exp))
+		req.Y = l.cursor.Dy()
 	}
 	return gfx.RectReduce(l.cursor, req)
 }
@@ -102,9 +102,12 @@ func (l *horizontalLayout) Used() image.Rectangle {
 	return l.used
 }
 
-func (l *horizontalLayout) Next(used image.Rectangle) {
-	l.used = l.used.Union(gfx.RectAddPadding(used, l.props.Padding))
-	l.cursor.Min.X = used.Max.X + 2*l.props.Padding
+func (l *horizontalLayout) Next(size image.Point) {
+	if size.Y > l.used.Dy() {
+		l.used.Max.Y = l.used.Min.Y + size.Y
+	}
+	l.used.Max.X += size.X + 2*l.props.Padding
+	l.cursor.Min.X += size.X + 2*l.props.Padding
 }
 
 // LayoutStack is a stack of layouts

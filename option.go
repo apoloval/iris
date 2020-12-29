@@ -25,6 +25,13 @@ func FontColor(col gfx.Color) WidgetOption {
 	}
 }
 
+// Align is a widget option to set the alignment
+func Align(a gfx.Align) WidgetOption {
+	return func(p *app.DrawProps) {
+		p.DefineAlign(a)
+	}
+}
+
 // LayoutOption is a layout option
 type LayoutOption func(*app.LayoutProps)
 
@@ -39,12 +46,5 @@ func Padding(pixels int) LayoutOption {
 func Expand(pixels int) LayoutOption {
 	return func(p *app.LayoutProps) {
 		p.Expand = pixels
-	}
-}
-
-// Align is a widget option to set the alignment
-func Align(a gfx.Align) LayoutOption {
-	return func(p *app.LayoutProps) {
-		p.Align = a
 	}
 }

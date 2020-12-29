@@ -72,7 +72,7 @@ func (s *State) BeginLayoutV(props LayoutProps) {
 func (s *State) EndLayout() {
 	used := s.Layout.Top().Used()
 	s.Layout.Pop()
-	s.Layout.Top().Next(used)
+	s.Layout.Top().Next(used.Size())
 }
 
 // Available returns the available space for the current widget
@@ -81,7 +81,7 @@ func (s *State) Available(req image.Point) image.Rectangle {
 }
 
 // Next signals the state must be prepared for the next widget in the layout
-func (s *State) Next(used image.Rectangle) {
-	s.Layout.Top().Next(used)
+func (s *State) Next(size image.Point) {
+	s.Layout.Top().Next(size)
 	s.DrawProps.Reset()
 }

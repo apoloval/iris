@@ -36,10 +36,10 @@ func main() {
 
 		app.BeginLayoutH(iris.Padding(5))
 
-		app.BeginLayoutV(iris.Expand(300), iris.Align(gfx.AlignRight))
-		app.Label(3, "Frames per second :")
-		app.Label(4, "Frame render time :")
-		app.Label(5, "Allocated memory :")
+		app.BeginLayoutV(iris.Expand(300))
+		app.Label(3, "Frames per second :", iris.Align(gfx.AlignRight))
+		app.Label(4, "Frame render time :", iris.Align(gfx.AlignRight))
+		app.Label(5, "Allocated memory :", iris.Align(gfx.AlignRight))
 		app.EndLayout()
 
 		app.BeginLayoutV()
